@@ -1,1 +1,1 @@
-from .request import get_all_journal_entries
+from .request import get_all_journal_entries, get_single_journal_entries
