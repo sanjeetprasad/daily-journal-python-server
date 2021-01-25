@@ -31,9 +31,29 @@ def get_all_journal_entries():
     return json.dumps(journalentries)
 
 
-    #                `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	# `concept`	TEXT NOT NULL,
-	# `entry`	TEXT NOT NULL,
-    # `date`	DATE,
-    # `mood_Id` INTEGER NOT NULL,
-    # FOREIGN KEY(`mood_id`) REFERENCES `Mood`(`id`)
+def get_single_journal_entries(id):
+    with sqlite3.connect("./dailyjournal.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            j.id,
+            j.concept,
+            j.entry,
+            j.date,
+            j.mood_Id
+            
+        FROM journal_Entries j
+        JOIN Mood m
+            ON m.id = j.mood_id
+        WHERE j.id = ?    
+        """, (id, ))
+
+        data = db_cursor.fetchone()
+        
+        journalentry= journalEntries(data['id'], data['concept'], data['entry'], data['date'], data['mood_Id'])
+            
+        journalentry.__dict__
+
+        return json.dumps(journalentry.__dict__)
