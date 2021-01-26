@@ -57,3 +57,12 @@ def get_single_journal_entries(id):
         journalentry.__dict__
 
         return json.dumps(journalentry.__dict__)
+
+def delete_journal_entrie(id):
+    with sqlite3.connect("./dailyjournal.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM journal_Entries
+        WHERE id = ?
+        """, (id, ))     

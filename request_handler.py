@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from entries import get_all_journal_entries, get_single_journal_entries
+from entries import get_all_journal_entries, get_single_journal_entries,delete_journal_entrie
 
 
 # Here's a class. It inherits from another class.
@@ -76,6 +76,15 @@ class HandleRequests(BaseHTTPRequestHandler):
     # It handles any PUT request.
     def do_PUT(self):
         self.do_POST()
+
+
+    def do_DELETE(self):
+        self._set_headers(204)
+
+        (resourse,id) = self.parse_url(self.path)
+
+        if resourse == "entries":
+           delete_journal_entrie(id)    
 
 
 # This function is not inside the class. It is the starting
